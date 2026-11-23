@@ -1,0 +1,12 @@
+#!name=G1 探针
+#!desc=只验证 MitM 与脚本链路是否覆盖 one.google.com(MITM 探针,不改任何响应)
+#!system=ios
+
+# 故意不写 [Rule]:先排除 Loon 旧版本解析不了 AND/PROTOCOL 逻辑规则、导致整个插件被拒的情况
+
+[Script]
+http-response ^https:\/\/one\.google\.com\/ script-path=https://cdn.jsdelivr.net/gh/jo-hnny/g1-acq-loon@main/g1-probe.js, requires-body=false, timeout=10, tag=probe-nobody
+http-response ^https:\/\/one\.google\.com\/ script-path=https://cdn.jsdelivr.net/gh/jo-hnny/g1-acq-loon@main/g1-probe.js, requires-body=true, timeout=10, tag=probe-body
+
+[MitM]
+hostname = one.google.com
