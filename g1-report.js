@@ -38,7 +38,20 @@ function esc(s) {
 function run() {
   var body = $response && $response.body;
   if (typeof body !== "string" || body === "") {
-    try { $notification.post("G1-ACQ", "脚本已触发但没拿到 body", "响应体可能超限"); } catch (e) {}
+    /* 没有正文:常见于 302 跳转页、未登录被重定向、或响应体超限 */
+    var st = ($response && $response.status) || "?";
+    var ct = ($response && $response.headers &&
+      ($response.headers["Content-Type"] || $response.headers["content-type"])) || "-";
+    var bt = (body === null || body === undefined) ? "undefined" : "empty";
+    var u = ($request && $request.url) || "?";
+    try {
+      $notification.post(
+        "G1-ACQ 无正文 (status " + st + ")",
+        "多半是跳转页或未登录,不是故障",
+        "type=" + bt + " ct=" + ct + "\n" + String(u).slice(0, 140)
+      );
+    } catch (e) {}
+    console.log("[g1-acq] no body: " + u + " status=" + st + " ct=" + ct + " type=" + bt);
     $done({});
     return;
   }
