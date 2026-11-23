@@ -1,0 +1,9 @@
+#!name=G1 目录导出
+#!desc=把 one.google.com 订阅页响应里的所有商品 ID 原样渲染到页面底部,用于确认优惠档是否存在/是否改名
+#!system=ios
+
+[Script]
+http-response ^https:\/\/one\.google\.com\/ script-path=https://cdn.jsdelivr.net/gh/jo-hnny/g1-acq-loon@b344cd4765b4786e0c006a3921729a534ac3747d/g1-dump.js, requires-body=true, timeout=20, tag=g1-dump
+
+[MitM]
+hostname = one.google.com
