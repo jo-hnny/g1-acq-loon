@@ -1,0 +1,9 @@
+#!name=G1 报告版
+#!desc=把 G1 ACQ 的改写结论直接渲染到网页底部(黑底绿字报告条),用于确认 MitM 与脚本链路
+#!system=ios
+
+[Script]
+http-response ^https:\/\/one\.google\.com\/ script-path=https://cdn.jsdelivr.net/gh/jo-hnny/g1-acq-loon@main/g1-report.js, requires-body=true, timeout=20, tag=g1-report
+
+[MitM]
+hostname = one.google.com
