@@ -1,0 +1,13 @@
+#!name=G1 ACQ 诊断版
+#!desc=Google One /ai 商品 ID 映射(诊断版:结果以系统通知弹出,且目标档不在目录时不替换)
+#!system=ios
+
+[Rule]
+# 屏蔽 QUIC(UDP 443),避免 Google App 走 HTTP/3 导致响应无法解密
+AND,((PROTOCOL,UDP),(DEST-PORT,443)),REJECT
+
+[Script]
+http-response ^https:\/\/one\.google\.com\/ai\? script-path=https://cdn.jsdelivr.net/gh/jo-hnny/g1-acq-loon@main/g1-acq-diag.js, requires-body=true, timeout=10, tag=g1-acq-diag
+
+[MitM]
+hostname = one.google.com
